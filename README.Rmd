@@ -150,7 +150,7 @@ cleaned_data %>%
 library(valr)
 library(dplyr)
 expr_data %>% mutate(expr_var = hpi.24 - hpi.6) -> expr_data
-expr_data %>% group_by('gene.name', 'plant', 'virus') %>% summarise(.mean = mean(expr_var), .var = var(expr_var))
+expr_data %>% group_by(gene.name, plant, fungus) %>% summarise(.mean = mean(expr_var), .var = var(expr_var))
 
 ```
 
