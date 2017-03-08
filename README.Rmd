@@ -150,7 +150,7 @@ cleaned_data %>%
 library(valr)
 library(dplyr)
 expr_data %>% mutate(expr_var = hpi.24 - hpi.6) -> expr_data
-expr_data %>% group_by(gene.name, plant, fungus) %>% summarise(.mean = mean(expr_var), .var = var(expr_var))
+expr_data %>% group_by(gene.name, plant, fungus) %>% summarise(.mean = mean(expr_var), .var = var(expr_var)) %>% group_by(plant, fungus) %>% arrange(desc(.var), desc(.mean)) %>% slice(1:3) -> summary_data 
 
 ```
 
@@ -173,6 +173,10 @@ Plot the expression (`value`) by time (`hpi`) for the above genes. Format the pl
 Extra credit: add error bars to the plot (use `geom_errorbar`).
 
 ```{r problem_5}
-#install.packages('ggplot2')
-#library(ggplot2)
+library(ggplot2)
+semi_join(expr_data, summary_data) -> joined_data
+ggplot(joined_data, aes( x = expr_var, y = hpi.6, color = gene.name)) + geom_point() + geom_smooth(method = "lm", se = FALSE) 
+ggplot(joined_data, aes( x = expr_var, y = hpi.12, color = gene.name)) + geom_point() + geom_smooth(method = "lm", se = FALSE) 
+ggplot(joined_data, aes( x = expr_var, y = hpi.18, color = gene.name)) + geom_point() + geom_smooth(method = "lm", se = FALSE) 
+ggplot(joined_data, aes( x = expr_var, y = hpi.24, color = gene.name)) + geom_point() + geom_smooth(method = "lm", se = FALSE) 
 ```
